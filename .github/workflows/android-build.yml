@@ -19,6 +19,11 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
+    - name: Setup Gradle 8.1.1
+      uses: gradle/actions/setup-gradle@v4
+      with:
+        gradle-version: '8.1.1'
+
     - name: Ensure correct directories exist
       run: mkdir -p ./android_client/app/src/main/res/layout ./android_client/app/src/main/res/values
 
