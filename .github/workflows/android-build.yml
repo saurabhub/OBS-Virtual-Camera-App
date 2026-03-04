@@ -3,7 +3,7 @@ name: Build Android APK
 on:
   push:
     branches: [ "main", "master" ]
-  workflow_dispatch: # Allows manual trigger from GitHub UI
+  workflow_dispatch:
 
 jobs:
   build:
@@ -18,23 +18,13 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
-        cache: gradle
 
-    - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v3
-
-    # Generate gradle wrapper dynamically since it's missing locally
-    - name: Generate Gradle Wrapper
-      working-directory: ./android_client
-      run: gradle wrapper --gradle-version 8.1.1
-
-    - name: Grant execute permission for gradlew
-      working-directory: ./android_client
-      run: chmod +x gradlew
+    - name: Ensure correct directories exist
+      run: mkdir -p ./android_client/app/src/main/res/layout ./android_client/app/src/main/res/values
 
     - name: Build Debug APK
       working-directory: ./android_client
-      run: ./gradlew assembleDebug
+      run: gradle assembleDebug --stacktrace
 
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4
